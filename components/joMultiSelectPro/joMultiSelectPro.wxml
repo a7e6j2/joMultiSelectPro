@@ -1,21 +1,21 @@
 <view class="joey-select-wrapper {{ isActive ? 'active' : '' }}">
-  <view class="joey-select-list {{ isRootSelected ? 'selected' : '' }}">
-    <!-- 第一级列表 -->
-    <scroll-view class="joey-select-box"  scroll-y>
+  <view class="joey-select-list" style="width:{{levels*100}}%;{{ level>0 ? 'left:-'+level*100+'%':''}}">
+    <!-- Top level selection -->
+    <scroll-view class="joey-select-box" scroll-y>
       <block wx:for="{{modelList}}" wx:key="{{item.id}}">
         <view class="joey-select-option" bindtap="selectRoot" data-id="{{item.id}}">
           {{item.name}}
         </view>
       </block>
     </scroll-view>
-    <!-- 当前二级列表 -->
+    <!-- next level selection -->
     
-    <scroll-view class="joey-select-box" scroll-y>
-      <view class="joey-select-option back-option" bindtap="backToRoot" data-layer="{{layer}}">
+    <scroll-view wx:for="{{nodeList}}" class="joey-select-box" scroll-y>
+      <view class="joey-select-option back-option" bindtap="backToPrev" data-layer="{{layer}}">
        返回上级列表<text class="back-txt">{{pickName}}</text></view>
        
-      <block wx:for="{{secondList}}" wx:key="{{item.id}}">
-        <view class="joey-select-option" bindtap="selectSecond" data-index="{{index}}">
+      <block wx:for="{{nodeList[level-1]}}" wx:key="{{item.id}}">
+        <view class="joey-select-option" bindtap="selectNode" data-index="{{index}}"  data-id="{{item.id}}">
           {{item.name}}
         </view>
       </block>

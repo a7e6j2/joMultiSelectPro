@@ -6,6 +6,13 @@
 
 Component({
   properties: {
+
+    levels: {
+      type: Number,
+      value: 1,
+    },
+
+
     openStatus: {
       type: Boolean,
       value: false,
@@ -15,6 +22,7 @@ Component({
           isActive: newVal,
           isRootSelected: false,
           pickName:'',
+          level: 0,
          
         });
       }
@@ -27,11 +35,11 @@ Component({
     isActive: false,
     isRootSelected: false,
     modelList: [],
-    secondList: [],
+    nodeList: [],
     rootList:[],
     pickName:'',
+    level:0,
 
-  
   },
 
   methods: {
@@ -41,39 +49,73 @@ Component({
      
       this.data.items.forEach((value) => {
         if (value.id === proId) {
+          
+          var nodeList = 'nodeList[' + this.data.level + ']';
+
 
           this.setData({
             rootList: value,
-            secondList: value.children,
+            [nodeList] : value.children,
             isRootSelected: true,
-            pickName: value.name,          
+            pickName: value.name, 
+            level: this.data.level+1, 
+                  
           });
+
+          console.log('nodelist:',this.data.nodeList);
         }
       });
     },
    
 
     // 处理返回
-    backToRoot: function () {
+    backToPrev: function () {
       this.setData({
-        rootList: [],
-        secondList: [],
-        isRootSelected: false
+        level: this.data.level-1,
       });
     },
 
-    // 处理点击二级事件
-    selectSecond: function (event) {
-      let { index } = event.target.dataset;
+  
+    selectNode: function (event) {
+      let proId = event.target.dataset.id;
+      let currentLevel = this.data.level - 1;
+      this.data.nodeList[currentLevel].forEach((value) => {
+        if (value.id === proId) {
+          var nodeList = 'nodeList[' + this.data.level + ']';
+          console.log(value.children)
+          console.log('result', value.children === '')
+          if (value.children === '' || value.children == undefined){
+           
+            let { index } = event.target.dataset;
+            ///let returnData = { rootData: this.data.rootList, currentData: this.data.secondList[index] }
+            this.triggerEvent('handleSelect', index);
+          }else{
 
-      let returnData = { rootData: this.data.rootList, currentData: this.data.secondList[index]}
+            this.setData({
+              [nodeList]: value.children,
+              pickName: value.name,
+              level: this.data.level + 1,
 
-      this.triggerEvent('handleSelect', returnData);
+            });
+
+          
+
+          }
+       
+          
+
+          console.log('nodelist2:', this.data.nodeList);
+        }
+      });
     }
   },
   ready: function () {
+
+
     this.setData({
-      modelList: this.data.items
+      modelList: this.data.items,
+      levels: this.data.levels,
+     
     });
   }
 })

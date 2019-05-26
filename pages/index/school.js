@@ -46,7 +46,13 @@ const modelList = [
             "name": "机械工程(创新班)-4年A班",
             "xz": "",
             "qualiName": "",
-            "children": ""
+            "children": [
+                        {
+                          "id": "1056116847",
+                          "name": "机械工程(创新班)-4年",
+                          "xz": 4,
+                          "qualiName": "本科"
+                        }]
           },
           {
             "id": "13516",
@@ -106,7 +112,13 @@ const modelList = [
             "name": "车辆工程-4年A班",
             "xz": "",
             "qualiName": "",
-            "children": ""
+            "children": [
+              {
+                "id": "10561168474",
+                "name": "机械工程444",
+                "xz": 4,
+                "qualiName": "本科"
+              }]
           },
           {
             "id": "13532",

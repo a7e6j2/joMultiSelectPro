@@ -17,7 +17,6 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 200%;
   height: 100%;
   box-sizing: border-box;
   transition: all .35s ease-in;
@@ -27,8 +26,8 @@
 }
 .joey-select-box{
   height: 100%;
-  width: 50%;
   float: left;
+  width: 100vw;
 }
 
 .joey-select-wrapper.active{
