@@ -12,6 +12,7 @@ Page({
   onLoad: function (options) {
     this.setData({modelList:modelList})
   },
+  
   handleClick: function () {
     this.setData({
       isActive: true
@@ -22,7 +23,7 @@ Page({
     console.log('data:',event.detail);
     this.setData({
       isActive: false,
-      currentSelect: event.detail.currentData.name,
+      currentSelect: event.detail.currentSelected.name,
     });
   }
 })

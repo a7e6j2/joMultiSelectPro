@@ -1,5 +1,5 @@
 /*
- * 两层全屏选择应用
+ * 无限层全屏选择应用
  *
  * 作者: Joey Wong 黄俊研
  */
@@ -9,7 +9,7 @@ Component({
 
     levels: {
       type: Number,
-      value: 1,
+      value: 2,
     },
 
 
@@ -31,12 +31,10 @@ Component({
     items: null,
   },
   data: {
-   
     isActive: false,
-    isRootSelected: false,
     modelList: [],
     nodeList: [],
-    rootList:[],
+    pickList: [],
     pickName:'',
     level:0,
 
@@ -51,11 +49,12 @@ Component({
         if (value.id === proId) {
           
           var nodeList = 'nodeList[' + this.data.level + ']';
-
+          var pickList = 'pickList[' + this.data.level + ']';
 
           this.setData({
-            rootList: value,
+            
             [nodeList] : value.children,
+            [pickList] : value,
             isRootSelected: true,
             pickName: value.name, 
             level: this.data.level+1, 
@@ -70,8 +69,19 @@ Component({
 
     // 处理返回
     backToPrev: function () {
+     
+      var pickData = this.data.pickList;
+      delete pickData[this.data.level];
+
       this.setData({
         level: this.data.level-1,
+      });
+    },
+
+    backToClose: function (){
+
+      this.setData({
+        openStatus: false,
       });
     },
 
@@ -82,29 +92,24 @@ Component({
       this.data.nodeList[currentLevel].forEach((value) => {
         if (value.id === proId) {
           var nodeList = 'nodeList[' + this.data.level + ']';
-          console.log(value.children)
-          console.log('result', value.children === '')
+          var pickList = 'pickList[' + this.data.level + ']';
           if (value.children === '' || value.children == undefined){
            
             let { index } = event.target.dataset;
-            ///let returnData = { rootData: this.data.rootList, currentData: this.data.secondList[index] }
-            this.triggerEvent('handleSelect', index);
+            let returnData = { selectedData: this.data.pickList, currentSelected: this.data.nodeList[currentLevel][index] }
+            this.triggerEvent('handleSelect', returnData);
+
           }else{
 
             this.setData({
+              [pickList]: value,
               [nodeList]: value.children,
               pickName: value.name,
               level: this.data.level + 1,
 
             });
 
-          
-
           }
-       
-          
-
-          console.log('nodelist2:', this.data.nodeList);
         }
       });
     }
@@ -115,6 +120,7 @@ Component({
     this.setData({
       modelList: this.data.items,
       levels: this.data.levels,
+
      
     });
   }

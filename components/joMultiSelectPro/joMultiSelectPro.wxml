@@ -2,6 +2,8 @@
   <view class="joey-select-list" style="width:{{levels*100}}%;{{ level>0 ? 'left:-'+level*100+'%':''}}">
     <!-- Top level selection -->
     <scroll-view class="joey-select-box" scroll-y>
+      <view class="joey-select-option back-option" bindtap="backToClose">
+       返回</view>
       <block wx:for="{{modelList}}" wx:key="{{item.id}}">
         <view class="joey-select-option" bindtap="selectRoot" data-id="{{item.id}}">
           {{item.name}}
@@ -10,8 +12,8 @@
     </scroll-view>
     <!-- next level selection -->
     
-    <scroll-view wx:for="{{nodeList}}" class="joey-select-box" scroll-y>
-      <view class="joey-select-option back-option" bindtap="backToPrev" data-layer="{{layer}}">
+    <scroll-view wx:for="{{nodeList}}" class="joey-select-box" wx:key="{{item.index}}" scroll-y>
+      <view class="joey-select-option back-option" bindtap="backToPrev">
        返回上级列表<text class="back-txt">{{pickName}}</text></view>
        
       <block wx:for="{{nodeList[level-1]}}" wx:key="{{item.id}}">
